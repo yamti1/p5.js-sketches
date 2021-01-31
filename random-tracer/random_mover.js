@@ -27,9 +27,6 @@ class RandomMover {
 	}
 
 	draw() {
-		this.changeDirectionRandomly();
-		this.move();
-
 		noStroke();
 		fill(255, 238, 51);
 		ellipse(this.x, this.y, 10);
