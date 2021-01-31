@@ -7,6 +7,10 @@ class RandomMover {
 		this.randomness = randomness;
 	}
 
+	shouldChangeDirection() {
+		return true;
+	}
+
 	changeDirectionRandomly() {
 		let directionChange = random(-this.randomness, this.randomness);
 		this.direction += directionChange;
