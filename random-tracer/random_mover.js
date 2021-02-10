@@ -5,15 +5,25 @@ class RandomMover {
 		this.speed = speed;
 		this.direction = direction;
 		this.randomness = randomness;
+
+		this.directionChangeSubsribers = []
 	}
 
 	shouldChangeDirection() {
 		return true;
 	}
 
+	subscribeDirectionChange(callback) {
+		this.directionChangeSubsribers.push(callback);
+	}
+
 	changeDirectionRandomly() {
 		let directionChange = random(-this.randomness, this.randomness);
 		this.direction += directionChange;
+
+		this.directionChangeSubsribers.forEach(
+			(callback) => {callback()}
+		);
 	}
 
 	move() {
