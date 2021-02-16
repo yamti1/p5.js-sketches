@@ -1,21 +1,25 @@
+const COLOR = {r: 255, g: 238, b: 51};
+
 let random_mover = new RandomStarlikeMover(
-	200,	// x
-	200, 	// y
-	100, 	// speed
+	400,	// x
+	400, 	// y
+	150, 	// speed
 	0, 		// direction
 	0.5,	// randomness
-	0.01, 	// archness
-	100,	// changeDirectionFrameInterval
+	0.02, 	// archness
+	COLOR,
+	50,		// changeDirectionFrameInterval
 );
 
 let tracer = new Tracer2D(
 	random_mover,
-	1000,
-	0,
+	100,
+	COLOR,
 )
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
+	translate();
 }
 
 function draw() {

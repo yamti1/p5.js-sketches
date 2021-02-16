@@ -1,8 +1,8 @@
 class Tracer2D {
-    constructor(tracedObject, maxTraces, traceColor) {
+    constructor(tracedObject, maxTraces, color) {
         this.tracedObject = tracedObject;
         this.maxTraces = maxTraces;
-        this.traceColor = traceColor;
+        this.color = color;
 
         this.traces = [];
     }
@@ -27,7 +27,7 @@ class Tracer2D {
     }
 
     draw() {
-        stroke(100, 255, 255);
+        stroke(this.color.r, this.color.g, this.color.b);
         noFill();
 
         this._drawCurves();

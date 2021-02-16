@@ -1,10 +1,11 @@
 class RandomMover {
-	constructor(x, y, speed, direction, randomness) {
+	constructor(x, y, speed, direction, randomness, color) {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
 		this.direction = direction;
 		this.randomness = randomness;
+		this.color = color;
 
 		this.directionChangeSubsribers = []
 	}
@@ -38,7 +39,7 @@ class RandomMover {
 
 	draw() {
 		noStroke();
-		fill(255, 238, 51);
+		fill(this.color.r, this.color.g, this.color.b);
 		ellipse(this.x, this.y, 10);
 	}
 }
