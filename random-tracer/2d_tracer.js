@@ -1,10 +1,20 @@
 class Tracer2D {
-    constructor(tracedObject, maxTraces, color) {
+    constructor(tracedObject, config) {
         this.tracedObject = tracedObject;
-        this.maxTraces = maxTraces;
-        this.color = color;
+        this.maxTraces = config.maxTraces;
+        this.color = config.color;
+        this.headWidth = config.headWidth;
+        this.widthChangeFactor = config.widthChangeFactor;
 
         this.traces = [];
+
+        console.debug(`Tracer2D configured: 
+            tracedObject: ${this.tracedObject},
+            maxTraces: ${this.maxTraces},
+            color: (${this.color.r}, ${this.color.g}, ${this.color.b}),
+            headWidth: ${this.headWidth},
+            widthChangeFactor: ${this.widthChangeFactor},
+        `);
     }
 
     trace() {
@@ -29,7 +39,6 @@ class Tracer2D {
     draw() {
         stroke(this.color.r, this.color.g, this.color.b);
         noFill();
-
         this._drawCurves();
     }
 }

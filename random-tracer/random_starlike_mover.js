@@ -1,8 +1,13 @@
 class RandomStarlikeMover extends RandomMover {
-    constructor(x, y, speed, direction, randomness, archness, color, changeDirectionFrameInterval) {
-        super(x, y, speed, direction, randomness, color);
-        this.archness = archness;
-        this.changeDirectionFrameInterval = changeDirectionFrameInterval;
+    constructor(config) {
+        super(config);
+        this.archness = config.archness;
+        this.changeDirectionFrameInterval = config.changeDirectionFrameInterval;
+        
+        console.debug(`RandomStarlikeMover configured:
+            archness: ${this.archness}, 
+            changeDirectionFrameInterval: ${this.changeDirectionFrameInterval},
+        `);
     }
 
     shouldChangeDirection() {

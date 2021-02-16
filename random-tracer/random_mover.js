@@ -1,13 +1,24 @@
 class RandomMover {
-	constructor(x, y, speed, direction, randomness, color) {
-		this.x = x;
-		this.y = y;
-		this.speed = speed;
-		this.direction = direction;
-		this.randomness = randomness;
-		this.color = color;
+	constructor(config) {
+		this.x = config.x;
+		this.y = config.y;
+		this.speed = config.speed;
+		this.direction = config.direction;
+		this.randomness = config.randomness;
+		this.color = config.color;
+		this.width = config.width;
 
 		this.directionChangeSubsribers = []
+
+		console.debug(`RandomMover configured: 
+            x: ${this.x}, 
+			y: ${this.y},
+			speed: ${this.speed},
+			direction: ${this.direction},
+			randomness: ${this.randomness},
+			color: (${this.color.r}, ${this.color.g}, ${this.color.b}),
+			width: ${this.width},
+        `);
 	}
 
 	shouldChangeDirection() {
@@ -40,6 +51,6 @@ class RandomMover {
 	draw() {
 		noStroke();
 		fill(this.color.r, this.color.g, this.color.b);
-		ellipse(this.x, this.y, 10);
+		ellipse(this.x, this.y, this.width);
 	}
 }
