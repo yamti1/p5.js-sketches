@@ -20,10 +20,6 @@ class RandomMover {
 	changeDirectionRandomly() {
 		let directionChange = random(-this.randomness, this.randomness);
 		this.direction += directionChange;
-
-		this.directionChangeSubsribers.forEach(
-			(callback) => {callback()}
-		);
 	}
 
 	move() {
