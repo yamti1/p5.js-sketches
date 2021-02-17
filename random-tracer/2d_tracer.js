@@ -29,11 +29,21 @@ class Tracer2D {
     }
 
     _drawCurves() {
-        beginShape();
-        this.traces.forEach(trace => {
+        let width = this.headWidth;
+
+        for (let i = this.traces.length-1; i > 0; i--) {
+            const trace = this.traces[i];
+            const nextTrace = this.traces[i-1];
+
+            beginShape();
+            strokeWeight(width);
             curveVertex(trace.x, trace.y);
-        });
-        endShape();
+            curveVertex(trace.x, trace.y);
+            curveVertex(nextTrace.x, nextTrace.y);
+            curveVertex(nextTrace.x, nextTrace.y);
+            endShape();
+            width *= this.widthChangeFactor;
+        }
     }
 
     draw() {
