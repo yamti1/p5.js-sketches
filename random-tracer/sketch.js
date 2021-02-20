@@ -2,12 +2,13 @@ const COLOR = {r: 255, g: 255, b: 220};
 
 let random_mover = new RandomStarlikeMover({
 	// x and y are initialized in setup()
-	speed: 200,
+	speed: 400,
 	direction: 0,
 	randomness: 0.5,
 	archness: 0.02,
 	color: COLOR,
-	changeDirectionFrameInterval: 35,
+	changeDirectionFrameInterval: 20,
+	changeDirectionFrameIntervalFactorRange: {min: 0.75, max: 1},
 	width: 10,
 });
 
