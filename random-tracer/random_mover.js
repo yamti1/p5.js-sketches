@@ -35,7 +35,10 @@ class RandomMover {
 	}
 
 	move() {
-		let dt = 1 / frameRate();
+		// Assume constant frame rate because otherwise the movement would be effected by it which will cause glitches.
+		const frameRate = 60;
+
+		let dt = 1 / frameRate;
 		if (isNaN(dt) || !isFinite(dt)) {
 			console.warn(`Invalid dt: ${dt}`);
 			return;
