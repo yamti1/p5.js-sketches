@@ -1,42 +1,33 @@
-const COLOR = {r: 255, g: 255, b: 220};
+const STAR_COUNT = 2;
 
-let random_mover = new RandomStarlikeMover({
-	// x and y are initialized in setup()
-	speed: 400,
-	direction: 0,
-	randomness: 0.5,
-	archness: 0.02,
-	color: COLOR,
-	changeDirectionFrameInterval: 20,
-	changeDirectionFrameIntervalFactorRange: {min: 0.75, max: 1},
-	width: 10,
-});
-
-let tracer = new Tracer2D(
-	random_mover,
-	{
-		maxTraces: 75,
-		color: COLOR,
-		headWidth: 9, 
-		widthChangeFactor: 0.875,
-	}
-)
+let shootingStars = [];
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	random_mover.x = windowWidth / 2;
-	random_mover.y = windowHeight / 2;
+
+	for (let i = 0; i < STAR_COUNT; i++) {
+		shootingStars.push(new ShootingStar({
+			x: windowWidth / 2,
+			y: windowHeight / 2,
+			speed: 400,
+			direction: 0,
+			randomness: 0.5,
+			archness: 0.02,
+			color: { r: 255, g: 255, b: 220 },
+			changeDirectionFrameInterval: 20,
+			changeDirectionFrameIntervalFactorRange: { min: 0.75, max: 1 },
+			width: 10,
+			maxTraces: 75,
+			tailStartWidth: 9,
+			tailWidthChangeFactor: 0.875,
+		}));
+	}
 }
 
 function draw() {
 	background(0);
-
-	if (random_mover.shouldChangeDirection()) {
-		random_mover.changeDirectionRandomly();
-	}
-	random_mover.move();
-	tracer.trace();
-
-	random_mover.draw();
-	tracer.draw();
+	shootingStars.forEach(star => {
+		star.move();
+		star.draw();
+	});
 }
