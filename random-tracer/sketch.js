@@ -26,8 +26,10 @@ function setup() {
 
 function draw() {
 	background(0);
+	let mouse = {pressed: mouseIsPressed, x: mouseX, y: mouseY};
+	
 	shootingStars.forEach(star => {
-		star.move();
+		star.move(mouse);
 		star.draw();
 	});
 }

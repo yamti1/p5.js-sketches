@@ -34,6 +34,17 @@ class RandomMover {
 		this.direction += directionChange;
 	}
 
+	headTowards(targetPoint) {
+		const directionVector = {
+			x: targetPoint.x - this.x,
+			y: targetPoint.y - this.y,
+		}
+		let direction = atan(directionVector.y / directionVector.x);
+		if (directionVector.x < 0) { direction += PI; }
+
+		this.direction = direction;
+	}
+
 	move() {
 		// Assume constant frame rate because otherwise the movement would be effected by it which will cause glitches.
 		const frameRate = 60;

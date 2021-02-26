@@ -23,8 +23,11 @@ class ShootingStar {
         );
     }
 
-    move() {
-        if (this.random_mover.shouldChangeDirection()) {
+    move(mouse) {
+        if (mouse.pressed) {
+            this.random_mover.headTowards(mouse);
+        }
+        else if (this.random_mover.shouldChangeDirection()) {
             this.random_mover.changeDirectionRandomly();
         }
 
