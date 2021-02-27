@@ -24,7 +24,7 @@ class ShootingStar {
     }
 
     move(mouse) {
-        if (mouse.pressed) {
+        if (mouse.pressed && mouse.button === LEFT) {
             this.random_mover.headTowards(mouse);
         }
         else if (this.random_mover.shouldChangeDirection()) {
