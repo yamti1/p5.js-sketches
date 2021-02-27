@@ -23,13 +23,17 @@ class ShootingStar {
         );
     }
 
-    move(mouse) {
+    changeDirectionIfNeeded(mouse) {
         if (mouse.pressed && mouse.button === LEFT) {
             this.random_mover.headTowards(mouse);
         }
         else if (this.random_mover.shouldChangeDirection()) {
             this.random_mover.changeDirectionRandomly();
         }
+    }
+
+    move(mouse) {
+        this.changeDirectionIfNeeded(mouse);
 
         this.random_mover.move();
         this.tracer.trace();
