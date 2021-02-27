@@ -30,7 +30,7 @@ function setup() {
 
 function draw() {
 	background(0);
-	let mouse = {
+	const mouse = {
 		pressed: mouseIsPressed,
 		button: mouseButton,
 		x: mouseX,
@@ -44,6 +44,6 @@ function draw() {
 }
 
 function doubleClicked() {
-	let shootingStar = createShootingStar(mouseX, mouseY);
+	const shootingStar = createShootingStar(mouseX, mouseY);
 	shootingStars.push(shootingStar);
 }

@@ -49,14 +49,14 @@ class RandomMover {
 		// Assume constant frame rate because otherwise the movement would be effected by it which will cause glitches.
 		const frameRate = 60;
 
-		let dt = 1 / frameRate;
+		const dt = 1 / frameRate;
 		if (isNaN(dt) || !isFinite(dt)) {
 			console.warn(`Invalid dt: ${dt}`);
 			return;
 		}
 
-		let dx = this.speed * dt * cos(this.direction);
-		let dy = this.speed * dt * sin(this.direction);
+		const dx = this.speed * dt * cos(this.direction);
+		const dy = this.speed * dt * sin(this.direction);
 
 		this.x += dx;
 		this.y += dy;

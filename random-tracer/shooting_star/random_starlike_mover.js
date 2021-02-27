@@ -19,17 +19,17 @@ class RandomStarlikeMover extends RandomMover {
     }
 
     changeDirectionRandomly() {
-        let directionChange = PI + random(this.randomness * 0.25, this.randomness * 2);
+        const directionChange = PI + random(this.randomness * 0.25, this.randomness * 2);
         this.direction += directionChange;
 
-        // Refresh the frame interval to the next directiokn change
+        // Refresh the frame interval to the next direction change
         this.frameInterval = this.getFrameInterval();
     }
 
     getFrameInterval() {
-        let minFactor = this.changeDirectionFrameIntervalFactorRange.min;
-        let maxFactor = this.changeDirectionFrameIntervalFactorRange.max;
-        let frameInterval = int(this.changeDirectionFrameInterval * random(minFactor, maxFactor));
+        const minFactor = this.changeDirectionFrameIntervalFactorRange.min;
+        const maxFactor = this.changeDirectionFrameIntervalFactorRange.max;
+        const frameInterval = int(this.changeDirectionFrameInterval * random(minFactor, maxFactor));
         return frameInterval;
     }
 
