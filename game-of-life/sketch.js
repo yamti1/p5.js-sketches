@@ -8,6 +8,12 @@ class GameOfLife {
     this.world.push(cell);
   }
 
+  makeDead(cell) {
+    let index = this.world.findIndex(c => c.x === cell.x && c.y === cell.y);
+    if (index === -1) { return; }
+    this.world.splice(index, 1);
+  }
+
   isAlive(cell) {
     return this.world.find(c => c.x === cell.x && c.y === cell.y);
   }
@@ -87,11 +93,19 @@ class GridView {
       }
     }
   }
+
+  calculateCellFromPosition(x, y) {
+    return {
+      x: Math.floor(x / this.cellWidth),
+      y: Math.floor(y / this.cellHeight),
+    };
+  }
 }
 
 
 let view = new GridView(400, 400, 50, 50);
 let game = new GameOfLife();
+let running = false;
 
 function setup() {
   createCanvas(400, 400);
@@ -101,4 +115,34 @@ function setup() {
 function draw() {
   background(220);
   view.draw(game);
+  if (running) {
+    game.nextGeneration();
+  }
+}
+
+function togglePointedCell() {
+  let cell = view.calculateCellFromPosition(mouseX, mouseY);
+  if (game.isAlive(cell)) {
+    game.makeDead(cell);
+  } else {
+    game.makeAlive(cell);
+  }
+}
+
+function mousePressed() {
+  if (mouseButton === LEFT) {
+    togglePointedCell();
+  } else if (mouseButton === RIGHT) {
+
+  }
+}
+
+function mouseDragged() {
+  togglePointedCell();
+}
+
+function keyPressed() {
+  if (keyCode === ENTER) {
+    running = !running;
+  }
 }
