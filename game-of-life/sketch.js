@@ -15,7 +15,7 @@ class GameOfLife {
   }
 
   isAlive(cell) {
-    return this.world.find(c => c.x === cell.x && c.y === cell.y);
+    return this.world.find(c => c.x === cell.x && c.y === cell.y) !== undefined;
   }
 
   nextGeneration() {
@@ -23,8 +23,12 @@ class GameOfLife {
   }
 
   #calculateNextGeneration() {
-    return this.#getPotentialAliveCells(this.world)
-      .filter(cell => this.#shouldLive(cell));
+    let potentialyAlive = this.#getPotentialAliveCells(this.world);
+    let result = potentialyAlive.filter(cell => this.#shouldLive(cell));
+    return result;
+
+    // return this.#getPotentialAliveCells(this.world)
+    //   .filter(cell => this.#shouldLive(cell));
   }
 
   #getPotentialAliveCells() {
@@ -32,7 +36,7 @@ class GameOfLife {
         this.world
         .map(cell => this.#getNeighbours(cell))
         .flat()
-        .concat(this.world)
+        .concat(this.world) 
       );
   }
 
@@ -46,15 +50,17 @@ class GameOfLife {
   }
 
   #countLivingCells(cells) {
-    return cells.reduce(cell => this.world.has(cell) ? 1 : 0);
+    return cells.filter(cell => this.isAlive(cell)).length;
   }
 
   #getNeighbours(cell) {
     return [-1, 0, 1].map(dx => {
-      [-1, 0, 1].map(dy => {
+      return [-1, 0, 1].map(dy => {
         return {x: cell.x + dx, y: cell.y + dy};
-      })
-    }).filter(c => c != cell);  
+      });
+    })
+    .flat()
+    .filter(c => c.x !== cell.x || c.y !== cell.y);  
   }
 
   #uniqueCells(cells) {
