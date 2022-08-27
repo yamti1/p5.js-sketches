@@ -1,3 +1,6 @@
+const SHIFT_FACTOR = 5;
+
+
 class GameOfLife {
   constructor() {
     this.world = [];
@@ -75,6 +78,8 @@ class GridView {
     this.y = 0;
     this.rows = rows;
     this.columns = columns;
+    this.width = width;
+    this.height = height;
     this.cellWidth = width / columns;
     this.cellHeight = height / rows;
   }
@@ -98,9 +103,14 @@ class GridView {
 
   calculateCellFromPosition(x, y) {
     return {
-      x: Math.floor(x / this.cellWidth),
-      y: Math.floor(y / this.cellHeight),
+      x: Math.floor(x / this.cellWidth) + this.x,
+      y: Math.floor(y / this.cellHeight) + this.y,
     };
+  }
+
+  shiftBy(dx, dy) {
+    this.x += dx * SHIFT_FACTOR;
+    this.y += dy * SHIFT_FACTOR;
   }
 }
 
@@ -122,8 +132,8 @@ function draw() {
   }
 }
 
-function togglePointedCell() {
-  let cell = view.calculateCellFromPosition(mouseX, mouseY);
+function togglePointedCell(x, y) {
+  let cell = view.calculateCellFromPosition(x, y);
   if (game.isAlive(cell)) {
     game.makeDead(cell);
   } else {
@@ -133,18 +143,34 @@ function togglePointedCell() {
 
 function mousePressed() {
   if (mouseButton === LEFT) {
-    togglePointedCell();
-  } else if (mouseButton === RIGHT) {
-
+    togglePointedCell(mouseX, mouseY);
   }
 }
 
 function mouseDragged() {
-  togglePointedCell();
+  if (mouseButton === LEFT) {
+    togglePointedCell(mouseX, mouseY);
+  }
 }
 
 function keyPressed() {
-  if (keyCode === ENTER) {
-    running = !running;
+  switch (keyCode) {
+    case ENTER:
+      running = !running;
+      break;
+    case UP_ARROW:
+      view.shiftBy(0, -1);
+      break;
+    case DOWN_ARROW:
+      view.shiftBy(0, 1);
+      break;
+    case LEFT_ARROW:
+      view.shiftBy(-1, 0);
+      break;
+    case RIGHT_ARROW:
+      view.shiftBy(1, 0);
+      break;
+    default:
+      break;
   }
 }
