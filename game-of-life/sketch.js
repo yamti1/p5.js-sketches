@@ -23,12 +23,8 @@ class GameOfLife {
   }
 
   #calculateNextGeneration() {
-    let potentialyAlive = this.#getPotentialAliveCells(this.world);
-    let result = potentialyAlive.filter(cell => this.#shouldLive(cell));
-    return result;
-
-    // return this.#getPotentialAliveCells(this.world)
-    //   .filter(cell => this.#shouldLive(cell));
+    return this.#getPotentialAliveCells(this.world)
+      .filter(cell => this.#shouldLive(cell));
   }
 
   #getPotentialAliveCells() {
