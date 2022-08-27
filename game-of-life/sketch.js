@@ -1,4 +1,15 @@
+const CANVAS_WIDTH = 1000;
+const CANVAS_HEIGHT = 800;
+const ROWS = 80;
+const COLUMNS = 100;
+
 const SHIFT_FACTOR = 5;
+
+const DEAD_CELL_COLOR = 50;
+const LIVING_CELL_COLOR = 200;
+const CELL_BORDER_COLOR = 80;
+const CELL_BORDER_WIDTH = 1;
+
 
 
 class GameOfLife {
@@ -85,12 +96,12 @@ class GridView {
   }
 
   draw(game) {
-    strokeWeight(1);
-    stroke(80);
+    strokeWeight(CELL_BORDER_WIDTH);
+    stroke(CELL_BORDER_COLOR);
     for (let row = 0; row < this.rows; row++) {
       for (let column = 0; column < this.columns; column++) {
         let isHighlighted = game.isAlive({x: this.x + column, y: this.y + row});
-        fill(isHighlighted ? 200 : 50);
+        fill(isHighlighted ? LIVING_CELL_COLOR : DEAD_CELL_COLOR);
         rect(
           column * this.cellWidth, 
           row * this.cellHeight, 
@@ -115,17 +126,16 @@ class GridView {
 }
 
 
-let view = new GridView(400, 400, 50, 50);
+let view = new GridView(CANVAS_WIDTH, CANVAS_HEIGHT, ROWS, COLUMNS);
 let game = new GameOfLife();
 let running = false;
 
 function setup() {
-  createCanvas(400, 400);
-  game.makeAlive({x: 10, y: 10});
+  createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
 function draw() {
-  background(220);
+  background(DEAD_CELL_COLOR);
   view.draw(game);
   if (running) {
     game.nextGeneration();
