@@ -96,20 +96,34 @@ class GridView {
   }
 
   draw(game) {
+    background(DEAD_CELL_COLOR);
     strokeWeight(CELL_BORDER_WIDTH);
     stroke(CELL_BORDER_COLOR);
-    for (let row = 0; row < this.rows; row++) {
-      for (let column = 0; column < this.columns; column++) {
-        let isHighlighted = game.isAlive({x: this.x + column, y: this.y + row});
-        fill(isHighlighted ? LIVING_CELL_COLOR : DEAD_CELL_COLOR);
-        rect(
-          column * this.cellWidth, 
-          row * this.cellHeight, 
-          this.cellWidth, 
-          this.cellHeight
-        );
-      }
+    fill(LIVING_CELL_COLOR);
+
+    for (let row = 1; row < this.rows; row++) {
+      const y = row * this.cellHeight;
+      line(0, y, this.width, y);
     }
+
+    for (let column = 1; column < this.columns; column++) {
+      const x = column * this.cellWidth;
+      line(x, 0, x, this.height);
+    }
+
+    game.world
+    .filter(cell => {
+       return cell.x >= this.x && cell.x < this.x + this.columns &&
+              cell.y >= this.y && cell.y < this.y + this.rows;
+    })
+    .forEach(cell => {
+      rect(
+        cell.x * this.cellWidth, 
+        cell.y * this.cellHeight, 
+        this.cellWidth, 
+        this.cellHeight
+      );
+    });
   }
 
   calculateCellFromPosition(x, y) {
@@ -135,7 +149,7 @@ function setup() {
 }
 
 function draw() {
-  background(DEAD_CELL_COLOR);
+  
   view.draw(game);
   if (running) {
     game.nextGeneration();
