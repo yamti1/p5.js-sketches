@@ -51,11 +51,10 @@ class GameOfLife {
   }
 
   #shouldLive(cell) {
-    let livingNeighboursCount = this.#countLivingCells(this.#getNeighbours(cell))
-    let isCellAlive = this.#countLivingCells([cell]) === 1;
+    const livingNeighboursCount = this.#countLivingCells(this.#getNeighbours(cell))
     
     if (livingNeighboursCount === 3) { return true; }
-    if (livingNeighboursCount === 2 && isCellAlive) { return true; }
+    if (livingNeighboursCount === 2 && this.isAlive(cell)) { return true; }
     return false;
   }
 
