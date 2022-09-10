@@ -118,8 +118,8 @@ class GridView {
     })
     .forEach(cell => {
       rect(
-        cell.x * this.cellWidth, 
-        cell.y * this.cellHeight, 
+        (cell.x - this.x) * this.cellWidth, 
+        (cell.y - this.y) * this.cellHeight, 
         this.cellWidth, 
         this.cellHeight
       );
