@@ -3,6 +3,9 @@ const CANVAS_HEIGHT = 800;
 const ROWS = 80;
 const COLUMNS = 100;
 
+// Limit the frame rate. 0 for no limit.
+const LIMIT_FRAME_RATE = 0;
+
 const SHIFT_FACTOR = 5;
 
 const DEAD_CELL_COLOR = 50;
@@ -171,6 +174,9 @@ let running = false;
 
 function setup() {
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  if (LIMIT_FRAME_RATE > 0) {
+    frameRate(LIMIT_FRAME_RATE);
+  }
 }
 
 function draw() {
