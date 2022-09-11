@@ -10,26 +10,47 @@ const LIVING_CELL_COLOR = 200;
 const CELL_BORDER_COLOR = 80;
 const CELL_BORDER_WIDTH = 1;
 
+class Cell {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  
+  toString() {
+    return `${this.x},${this.y}`
+  }
 
+  static fromString(str) {
+    const splitted = str.split(",");
+    return new Cell(parseInt(splitted[0]), parseInt(splitted[1]));
+  }
+}
 
 class GameOfLife {
   constructor() {
-    this.world = [];
+    this.world = new Set();  // Contains string representations of cells
   }
 
   makeAlive(cell) {
     if (this.isAlive(cell)) { return; }
-    this.world.push(cell);
+    this.world.add(cell.toString());
   }
 
   makeDead(cell) {
-    let index = this.world.findIndex(c => c.x === cell.x && c.y === cell.y);
-    if (index === -1) { return; }
-    this.world.splice(index, 1);
+    this.world.delete(cell.toString());
   }
 
   isAlive(cell) {
-    return this.world.find(c => c.x === cell.x && c.y === cell.y) !== undefined;
+    return this.#isAliveStr(cell.toString());
+  }
+
+  #isAliveStr(cell_str) {
+    return this.world.has(cell_str);
+  }
+
+  // returns: The current generation
+  getWorld() {
+    return [...this.world].map(cellStr => Cell.fromString(cellStr));
   }
 
   nextGeneration() {
@@ -37,47 +58,52 @@ class GameOfLife {
   }
 
   #calculateNextGeneration() {
-    return this.#getPotentialAliveCells(this.world)
-      .filter(cell => this.#shouldLive(cell));
+    let nextGeneration = this.#getPotentiallyAliveCells(this.world);
+    for (const cell of nextGeneration) {
+      if (!this.#shouldLive(cell)) {
+        nextGeneration.delete(cell);
+      }
+    }
+    return nextGeneration
   }
 
-  #getPotentialAliveCells() {
-    return this.#uniqueCells(
-        this.world
-        .map(cell => this.#getNeighbours(cell))
-        .flat()
-        .concat(this.world) 
-      );
+  #getPotentiallyAliveCells() {
+    let result = new Set(this.world);
+    for (const cell of this.world) {
+      for (const neighbour of this.#getNeighbours(cell)) {
+        result.add(neighbour);
+      }
+    }
+    return result;
   }
 
+  // cell: A string representation of a cell
+  // returns: True if the cell should live in the next generation, false otherwise.
   #shouldLive(cell) {
     const livingNeighboursCount = this.#countLivingCells(this.#getNeighbours(cell))
     
     if (livingNeighboursCount === 3) { return true; }
-    if (livingNeighboursCount === 2 && this.isAlive(cell)) { return true; }
+    if (livingNeighboursCount === 2 && this.#isAliveStr(cell)) { return true; }
     return false;
   }
 
+  // cells: Array of cells to check
+  // returns: Number of living cells
   #countLivingCells(cells) {
-    return cells.filter(cell => this.isAlive(cell)).length;
+    return cells.filter(cell => this.#isAliveStr(cell)).length;
   }
 
-  #getNeighbours(cell) {
+  // cellStr: A string representation of a cell
+  // returns: An Array of the string representations of the cell's neighbours
+  #getNeighbours(cellStr) {
+    const cell = Cell.fromString(cellStr);
     return [-1, 0, 1].map(dx => {
       return [-1, 0, 1].map(dy => {
-        return {x: cell.x + dx, y: cell.y + dy};
+        return new Cell(cell.x + dx, cell.y + dy).toString();
       });
     })
     .flat()
-    .filter(c => c.x !== cell.x || c.y !== cell.y);  
-  }
-
-  #uniqueCells(cells) {
-    return cells.filter(
-      (cell, i) => i === cells.findLastIndex(
-        c => c.x === cell.x && c.y === cell.y
-      )
-    );
+    .filter(c => c != cell);
   }
 }
 
@@ -110,7 +136,7 @@ class GridView {
       line(x, 0, x, this.height);
     }
 
-    game.world
+    game.getWorld()
     .filter(cell => {
        return cell.x >= this.x && cell.x < this.x + this.columns &&
               cell.y >= this.y && cell.y < this.y + this.rows;
@@ -126,10 +152,10 @@ class GridView {
   }
 
   calculateCellFromPosition(x, y) {
-    return {
-      x: Math.floor(x / this.cellWidth) + this.x,
-      y: Math.floor(y / this.cellHeight) + this.y,
-    };
+    return new Cell(
+      Math.floor(x / this.cellWidth) + this.x,
+      Math.floor(y / this.cellHeight) + this.y,
+    );
   }
 
   shiftBy(dx, dy) {
@@ -148,7 +174,6 @@ function setup() {
 }
 
 function draw() {
-  
   view.draw(game);
   if (running) {
     game.nextGeneration();
@@ -156,7 +181,7 @@ function draw() {
 }
 
 function togglePointedCell(x, y) {
-  let cell = view.calculateCellFromPosition(x, y);
+  const cell = view.calculateCellFromPosition(x, y);
   if (game.isAlive(cell)) {
     game.makeDead(cell);
   } else {
